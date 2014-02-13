@@ -1,9 +1,8 @@
 package vault.managers.display
 {
 	import flash.utils.Dictionary;
-	import flash.utils.describeType;
 	
-	import starling.display.Stage;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	
 	import vault.core.StateStarling;
@@ -17,7 +16,7 @@ package vault.managers.display
 	 * 
 	 * <strong>Simple Usage</strong><br />
 	 * <code>
-	 * 	StateManagerStarling.init( stage, State1, State2 );<br />
+	 * 	StateManagerStarling.init( context, State1, State2 );<br />
 	 * 	StateManagerStarling.state = State1;
 	 * </code>
 	 * 
@@ -28,7 +27,7 @@ package vault.managers.display
 		private static var _instance:StateManagerStarling;
 		
 		/** _stage : A reference to the current <code>Stage</code> **/
-		private static var _stage:Stage;
+		private static var _context:DisplayObjectContainer;
 		
 		/** _states : A <code>Dictionary</code> of possible states **/
 		private static var _states:Dictionary = new Dictionary();
@@ -46,12 +45,12 @@ package vault.managers.display
 		 * @param stage - A reference to the current stage
 		 * @param stateNames - An <code>Array</code> of possible states 
 		 */		
-		public static function init( stage:Stage, ...stateNames ):void
+		public static function init( context:DisplayObjectContainer, ...stateNames ):void
 		{
 			if( !_instance )
 			{
 				_instance = new StateManagerStarling( new Singleton() );
-				_stage = stage;
+				_context = context;
 				
 				for each( var classObject:* in stateNames )
 				{
@@ -72,11 +71,16 @@ package vault.managers.display
 		 */		
 		private static function changeState( stateClass:Class, transition:Boolean = false ):void
 		{
-			if( _currentState ) _stage.removeChild( _currentState );
+			if( _currentState ) 
+			{
+				_context.removeChild( _currentState );
+				_currentState.dispose();
+				_currentState = null;
+			}
 			if( !transition )
-				_stage.addChild( _currentState = new stateClass() );
+				_context.addChild( _currentState = new stateClass() );
 			else
-				_stage.addChildAt( _currentState = new stateClass(), _stage.numChildren - 1 );
+				_context.addChildAt( _currentState = new stateClass(), _context.numChildren - 1 );
 		}
 		
 		/** 
