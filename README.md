@@ -12,3 +12,4 @@ StateMangagerStarling.as now takes a DisplayObjectContainer instead of a Stage a
 
 v4.0.2
 Latest version of starling
+StateManager & StateManagerStarling removed the removeClassPrefixFunction as it's not required, and slowed down state changing

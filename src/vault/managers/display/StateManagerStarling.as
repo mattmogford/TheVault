@@ -6,7 +6,6 @@ package vault.managers.display
 	import starling.events.Event;
 	
 	import vault.core.StateStarling;
-	import vault.utils.removeClassPrefix;
 	
 	/**
 	 * @author Matthew Mogford - mattmogford.com<br /><br />
@@ -54,12 +53,11 @@ package vault.managers.display
 				
 				for each( var classObject:* in stateNames )
 				{
-					var stateName:String = removeClassPrefix( classObject );
-					if( stateName in _states ) throw new Error( "Duplicate state with the name '" + stateName + "'" );
+					if( classObject in _states ) throw new Error( "Duplicate state with the name '" + classObject + "'" );
 					else
 					{
-						trace( "[ StateManagerStarling ] Adding state '" + stateName + "'" );
-						_states[ stateName ] = classObject;
+						trace( "[ StateManagerStarling ] Adding state '" + classObject + "'" );
+						_states[ classObject ] = classObject;
 					}
 				}
 			}
@@ -88,12 +86,11 @@ package vault.managers.display
 		 */		
 		public static function set state( classObject:Class ):void
 		{
-			var stateName:String = removeClassPrefix( classObject );
-			trace( "[ StateManagerStarling ] Changing state '" + stateName + "'" );
-			if( stateName in _states ) changeState( _states[ stateName ] );
-			else throw new Error( "A state with the name '" + stateName + "' does not exist" );
+			trace( "[ StateManagerStarling ] Changing state '" + classObject + "'" );
+			if( classObject in _states ) changeState( _states[ classObject ] );
+			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
 			
-			stateName = null;
+			classObject = null;
 		}
 		
 		/** 

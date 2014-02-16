@@ -7,7 +7,6 @@ package vault.managers.display
 	import flash.utils.describeType;
 	
 	import vault.core.State;
-	import vault.utils.removeClassPrefix;
 		
 	/**
 	 * @author Matthew Mogford - mattmogford.com<br /><br />
@@ -55,12 +54,11 @@ package vault.managers.display
 				
 				for each( var classObject:* in stateNames )
 				{
-					var stateName:String = removeClassPrefix( classObject );
-					if( stateName in _states ) throw new Error( "Duplicate state with the name '" + stateName + "'" );
+					if( classObject in _states ) throw new Error( "Duplicate state with the name '" + classObject + "'" );
 					else
 					{
-						trace( "[ StateManager ] Adding state '" + stateName + "'" );
-						_states[ stateName ] = classObject;
+						trace( "[ StateManager ] Adding state '" + classObject + "'" );
+						_states[ classObject ] = classObject;
 					}
 				}
 			}
@@ -84,10 +82,9 @@ package vault.managers.display
 		 */		
 		public static function set state( classObject:Class ):void
 		{
-			var stateName:String = removeClassPrefix( classObject );
-			trace( "[ StateManager ] Changing state '" + stateName + "'" );
-			if( stateName in _states ) changeState( _states[ stateName ] );
-			else throw new Error( "A state with the name '" + stateName + "' does not exist" );
+			trace( "[ StateManager ] Changing state '" + classObject + "'" );
+			if( classObject in _states ) changeState( _states[ classObject ] );
+			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
 		}
 		
 		/** 
@@ -96,10 +93,9 @@ package vault.managers.display
 		 */		
 		public static function stateTransition( classObject:Class, transitionType:Class ):void
 		{
-			var stateName:String = removeClassPrefix( classObject );
-			trace( "[ StateManager ] Changing state '" + stateName + "'" );
+			trace( "[ StateManager ] Changing state '" + classObject + "'" );
 			
-			if( stateName in _states )
+			if( classObject in _states )
 			{
 				var bmp1:Bitmap = TransitionManager.bitmapDisplayObject( _stage, _currentState );
 				var bmp2:Bitmap;
@@ -113,7 +109,7 @@ package vault.managers.display
 				_currentState.alpha = 0;
 				TransitionManager.transition( bmp1, bmp2, transitionType ).addEventListener( Event.COMPLETE, transitionComplete );
 			}
-			else throw new Error( "A state with the name '" + stateName + "' does not exist" );
+			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
 		}
 		
 		/**
