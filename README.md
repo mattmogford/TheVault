@@ -9,3 +9,6 @@ This is the base point from which I will tidy up the library, removing any unnec
 
 v4.0.1
 StateMangagerStarling.as now takes a DisplayObjectContainer instead of a Stage as the holder for states etc.
+
+v4.0.2
+Latest version of starling
