@@ -1,13 +1,11 @@
 package vault.managers.display
 {
-	import flash.display.Bitmap;
-	import flash.display.Stage;
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
-	import flash.utils.describeType;
 	
 	import vault.core.State;
-		
+	
 	/**
 	 * @author Matthew Mogford - mattmogford.com<br /><br />
 	 * 
@@ -27,7 +25,7 @@ package vault.managers.display
 		private static var _instance:StateManager;
 		
 		/** _stage : A reference to the current <code>Stage</code> **/
-		private static var _stage:Stage;
+		private static var _context:DisplayObjectContainer;
 		
 		/** _states : A <code>Dictionary</code> of possible states **/
 		private static var _states:Dictionary = new Dictionary();
@@ -40,17 +38,17 @@ package vault.managers.display
 		{
 			if (!s) throw new Error( "Error: Instantiation failed: Use getInstance() instead of new." );
 		}
-
+		
 		/**
 		 * @param stage - A reference to the current stage
 		 * @param stateNames - An <code>Array</code> of possible states 
 		 */		
-		public static function init( stage:Stage, ...stateNames ):void
+		public static function init( context:DisplayObjectContainer, ...stateNames ):void
 		{
 			if( !_instance )
 			{
 				_instance = new StateManager( new Singleton() );
-				_stage = stage;
+				_context = context;
 				
 				for each( var classObject:* in stateNames )
 				{
@@ -70,11 +68,11 @@ package vault.managers.display
 		 */		
 		private static function changeState( stateClass:Class, transition:Boolean = false ):void
 		{
-			if( _currentState ) _stage.removeChild( _currentState );
+			if( _currentState ) _context.removeChild( _currentState );
 			if( !transition )
-				_stage.addChild( _currentState = new stateClass() );
+				_context.addChild( _currentState = new stateClass() );
 			else
-				_stage.addChildAt( _currentState = new stateClass(), _stage.numChildren - 1 );
+				_context.addChildAt( _currentState = new stateClass(), _context.numChildren - 1 );
 		}
 		
 		/** 
@@ -85,49 +83,6 @@ package vault.managers.display
 			trace( "[ StateManager ] Changing state '" + classObject + "'" );
 			if( classObject in _states ) changeState( _states[ classObject ] );
 			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
-		}
-		
-		/** 
-		 * @param classObject - The required <code>State Class</code>
-		 * @param transitionType - The required Transition type. The <code>Class</code> must extend <code>TransitionType</code>
-		 */		
-		public static function stateTransition( classObject:Class, transitionType:Class ):void
-		{
-			trace( "[ StateManager ] Changing state '" + classObject + "'" );
-			
-			if( classObject in _states )
-			{
-				var bmp1:Bitmap = TransitionManager.bitmapDisplayObject( _stage, _currentState );
-				var bmp2:Bitmap;
-				
-				_stage.addChild( bmp1 );
-				changeState( classObject, true );
-				bmp2 = TransitionManager.bitmapDisplayObject( _stage, _currentState );
-				_stage.addChild( bmp2 );
-				
-				_currentState.mouseChildren = false;
-				_currentState.alpha = 0;
-				TransitionManager.transition( bmp1, bmp2, transitionType ).addEventListener( Event.COMPLETE, transitionComplete );
-			}
-			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
-		}
-		
-		/**
-		 * <code>transitionComplete</code> Cleans up the Transition
-		 * @param event
-		 */		
-		protected static function transitionComplete(event:Event):void
-		{
-			_currentState.mouseChildren = true;
-			_currentState.alpha = 1;
-			
-			var bmp1:Bitmap = _stage.getChildAt( _stage.numChildren - 1 ) as Bitmap;
-			bmp1.bitmapData.dispose();
-			_stage.removeChildAt( _stage.numChildren - 1 );
-			
-			var bmp2:Bitmap = _stage.getChildAt( _stage.numChildren - 1 ) as Bitmap;
-			bmp2.bitmapData.dispose();
-			_stage.removeChildAt( _stage.numChildren - 1 );
 		}
 		
 		/**
