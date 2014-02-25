@@ -5,6 +5,13 @@ Matt's AS3 Library
 
 --------------------------------------------------
 
+v4.0.4
+* StateMangager.as StateMangagerStarling.as are no longer singletons. They are now used as re-usable classes.
+  But added a comment to create an interface that emulates a static version of the same thing.
+* Added a Database.as helper class the deals with SQLite.
+
+--------------------------------------------------
+
 v4.0.3
 StateMangager.as now takes a DisplayObjectContainer instead of a Stage as the holder for states etc. To match StateMangagerStarling.as
 

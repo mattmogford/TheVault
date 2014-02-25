@@ -14,59 +14,83 @@ package vault.managers.display
 	 * 
 	 * <strong>Simple Usage</strong><br />
 	 * <code>
-	 * 	StateManager.init( stage, State1, State2 );<br />
-	 * 	StateManager.state = State1;
+	 * 	var sm:StateManager = new StateManager( displayObj, State1, State2 );<br />
+	 * sm.state = State1;
 	 * </code>
+	 * 
+	 * 
+	 * * TO CREATE A STATIC VERSION OF THE ABOVE
+	 * private static var _stateManager:StateManagerStarling;<br /><br />
+	 public function MainStateManager( s:Singleton )<br />
+	 {<br />
+	 if (!s) throw new Error( "Error: Instantiation failed: Use getInstance() instead of new." );<br />
+	 }<br /><br />
+	 public static function init( context:DisplayObjectContainer, ...stateNames ):void<br />
+	 {<br />
+	 _stateManager = new StateManagerStarling( context );<br />
+	 for each( var classObject:* in stateNames ) _stateManager.addState( classObject );<br />
+	 }<br /><br />
+	 public static function set state( classObject:Class ):void<br />
+	 {<br />
+	 _stateManager.state = classObject;<br />
+	 }<br />
+	 * 
+	 ** Used to make <code>StateManagerStarling</code> a <code>Singleton</code>
+	* class Singleton{}
 	 * 
 	 */
 	public class StateManager
 	{
-		/** _instance : An instance of <code>StateManager</code> **/
-		private static var _instance:StateManager;
-		
 		/** _stage : A reference to the current <code>Stage</code> **/
-		private static var _context:DisplayObjectContainer;
+		private var _context:DisplayObjectContainer;
 		
 		/** _states : A <code>Dictionary</code> of possible states **/
-		private static var _states:Dictionary = new Dictionary();
+		private var _states:Dictionary = new Dictionary();
 		
 		/** _currentState : A reference to the current <code>State</code> **/
-		private static var _currentState:State;
+		private var _currentState:State;
 		
-		/** Constructor - <code>StateManager</code> can not be instantiated - It is a <code>Singleton Class</code>*/
-		public function StateManager(s:Singleton)
+		/** verbose : Setting this to <code>true</code>, will enable <code>tracing</code> **/
+		public var verbose:Boolean;
+		
+		/** Constructor - <code>StateManager</code>*/
+		public function StateManager( context:DisplayObjectContainer, ...stateNames )
 		{
-			if (!s) throw new Error( "Error: Instantiation failed: Use getInstance() instead of new." );
+			_context = context;
+			
+			for each( var classObject:* in stateNames ) addState( classObject );
 		}
 		
-		/**
-		 * @param stage - A reference to the current stage
-		 * @param stateNames - An <code>Array</code> of possible states 
-		 */		
-		public static function init( context:DisplayObjectContainer, ...stateNames ):void
+		/** 
+		 * @param classObject - The required <code>State Class</code>
+		 */
+		public function addState( classObject:Class ):void
 		{
-			if( !_instance )
+			if( classObject in _states ) throw new Error( "Duplicate state with the name '" + classObject + "'" );
+			else
 			{
-				_instance = new StateManager( new Singleton() );
-				_context = context;
-				
-				for each( var classObject:* in stateNames )
-				{
-					if( classObject in _states ) throw new Error( "Duplicate state with the name '" + classObject + "'" );
-					else
-					{
-						trace( "[ StateManager ] Adding state '" + classObject + "'" );
-						_states[ classObject ] = classObject;
-					}
-				}
+				if( verbose ) trace( "[ StateManager ] Adding state '" + classObject + "'" );
+				_states[ classObject ] = classObject;
 			}
+		}
+		
+		/** 
+		 * @param classObject - The required <code>State Class</code>
+		 */		
+		public function set state( classObject:Class ):void
+		{
+			if( verbose ) trace( "[ StateManager ] Changing state '" + classObject + "'" );
+			if( classObject in _states ) changeState( _states[ classObject ] );
+			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
+			
+			classObject = null;
 		}
 		
 		/** 
 		 * @param stateClass - The required <code>State Class</code>
 		 * @param transition - If the state change is part of a <code>Transition</code>, this must be set to <code>true</code>.
 		 */		
-		private static function changeState( stateClass:Class, transition:Boolean = false ):void
+		private function changeState( stateClass:Class, transition:Boolean = false ):void
 		{
 			if( _currentState ) _context.removeChild( _currentState );
 			if( !transition )
@@ -75,28 +99,13 @@ package vault.managers.display
 				_context.addChildAt( _currentState = new stateClass(), _context.numChildren - 1 );
 		}
 		
-		/** 
-		 * @param classObject - The required <code>State Class</code>
-		 */		
-		public static function set state( classObject:Class ):void
-		{
-			trace( "[ StateManager ] Changing state '" + classObject + "'" );
-			if( classObject in _states ) changeState( _states[ classObject ] );
-			else throw new Error( "A state with the name '" + classObject + "' does not exist" );
-		}
-		
 		/**
 		 * <code>purge</code> calls the purge function within the current <code>State Class</code> 
 		 * @param event 
 		 */		
-		public static function purge(event:Event):void
+		public function purge(event:Event):void
 		{
 			_currentState.purge( event );
 		}
 	}
 }
-
-/**
- * Used to make <code>StateManager</code> a <code>Singleton</code>
- */
-class Singleton{}
