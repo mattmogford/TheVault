@@ -5,6 +5,14 @@ Matt's AS3 Library
 
 --------------------------------------------------
 
+v4.0.6
+* Added ButtonBase to components package
+* Added ButtonBaseTheme to dataObjects
+* Together these add a themeable button for starling
+* Should Rename this to ButtonBaseStarling & ButtonBaseThemeStarling
+
+--------------------------------------------------
+
 v4.0.5
 * Added StateStarlingClickable to the core - This priovides an onTouch event and fires ON_TRIGGERED when clicked, and also scales the object.
   The onTouch function / the dispatching of the event should be made overiddable eventually.
