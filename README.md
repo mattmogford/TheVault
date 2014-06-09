@@ -5,6 +5,13 @@ Matt's AS3 Library
 
 --------------------------------------------------
 
+v4.0.5
+* Added StateStarlingClickable to the core - This priovides an onTouch event and fires ON_TRIGGERED when clicked, and also scales the object.
+  The onTouch function / the dispatching of the event should be made overiddable eventually.
+* Added Textfield extension class for Starling that enables the ability to switch of Multiline
+
+--------------------------------------------------
+
 v4.0.4
 * StateMangager.as StateMangagerStarling.as are no longer singletons. They are now used as re-usable classes.
   But added a comment to create an interface that emulates a static version of the same thing.
