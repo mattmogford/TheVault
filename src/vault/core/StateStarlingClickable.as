@@ -12,6 +12,8 @@ package vault.core
 	public class StateStarlingClickable extends StateStarling
 	{
 		public var enableTouch:Boolean = true;
+		public var disableScaling:Boolean = false;
+		
 		private var mIsDown:Boolean;
 		private var originalPos:Point = new Point();
 		
@@ -38,9 +40,13 @@ package vault.core
 				originalPos.x = this.x;
 				originalPos.y = this.y;
 				
-				this.scaleX = this.scaleY = 0.95;
-				this.x += (1.0 - 0.95) / 2.0 * this.width;
-				this.y += (1.0 - 0.95) / 2.0 * this.height;
+				if( !disableScaling )
+				{
+					this.scaleX = this.scaleY = 0.95;
+					this.x += (1.0 - 0.95) / 2.0 * this.width;
+					this.y += (1.0 - 0.95) / 2.0 * this.height;
+				}
+				
 				mIsDown = true;
 			}
 			else if (touch.phase == TouchPhase.MOVED && mIsDown)
