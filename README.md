@@ -5,6 +5,11 @@ Matt's AS3 Library
 
 --------------------------------------------------
 
+v4.0.7
+* Added disableScaling to StateStarlingClickable
+
+--------------------------------------------------
+
 v4.0.6
 * Added ButtonBase to components package
 * Added ButtonBaseTheme to dataObjects
