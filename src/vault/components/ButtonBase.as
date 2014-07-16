@@ -14,8 +14,6 @@ package vault.components
 	
 	public class ButtonBase extends StateStarlingClickable
 	{
-		private var _scaleFactor:Number;
-		
 		private var _theme:ButtonBaseTheme;		
 		private var _iconTex:Texture;
 		private var _fontSize:Number;
@@ -50,11 +48,9 @@ package vault.components
 		private var _mainTF:TextField;
 		private var _icon:Image;
 		
-		public function ButtonBase( w:Number, h:Number, scaleFactor:Number, theme:ButtonBaseTheme, iconTex:Texture = null, mainText:String = null, fontSize:Number = 0, multiline:Boolean = true, curvePos:Number = 0.35 )
+		public function ButtonBase( w:Number, h:Number, theme:ButtonBaseTheme, iconTex:Texture = null, mainText:String = null, fontSize:Number = 0, multiline:Boolean = true, curvePos:Number = 0.35 )
 		{
 			super();
-			
-			_scaleFactor = scaleFactor;
 			
 			_theme = theme;
 			_iconTex = iconTex;
@@ -108,7 +104,7 @@ package vault.components
 				_topRightCorner = new Image( _topCornerTex );
 				_topRightCorner.smoothing = TextureSmoothing.NONE;
 				_topRightCorner.scaleX = - _topRightCorner.scaleX;
-				_topRightCorner.x = w * _scaleFactor;
+				_topRightCorner.x = w;
 				this.addChild( _topRightCorner );
 			}
 			
@@ -116,13 +112,13 @@ package vault.components
 			{
 				_bottomLeftCorner = new Image( _bottomCornerTex );
 				_bottomLeftCorner.smoothing = TextureSmoothing.NONE;
-				_bottomLeftCorner.y = ( h  * _scaleFactor ) - _bottomLeftCorner.height;
+				_bottomLeftCorner.y = h - _bottomLeftCorner.height;
 				this.addChild( _bottomLeftCorner );
 				
 				_bottomRightCorner = new Image( _bottomCornerTex );
 				_bottomRightCorner .smoothing = TextureSmoothing.NONE;
 				_bottomRightCorner.scaleX = - _bottomRightCorner.scaleX;
-				_bottomRightCorner.x = w * _scaleFactor;
+				_bottomRightCorner.x = w;
 				_bottomRightCorner.y = _bottomLeftCorner.y;
 				this.addChild( _bottomRightCorner );
 			}
@@ -141,7 +137,7 @@ package vault.components
 				_vStretcherRight.smoothing = TextureSmoothing.NONE;
 				_vStretcherRight.height = _bottomRightCorner.bounds.top - _topRightCorner.bounds.bottom;
 				_vStretcherRight.scaleX = - _vStretcherRight.scaleX;
-				_vStretcherRight.x = w * _scaleFactor;
+				_vStretcherRight.x = w;
 				_vStretcherRight.y = _topRightCorner.bounds.bottom;
 				this.addChild( _vStretcherRight );
 			}
@@ -193,7 +189,7 @@ package vault.components
 				_hStretcherBottomLeft.smoothing = TextureSmoothing.NONE;
 				_hStretcherBottomLeft.x = _bottomLeftCorner.bounds.right;
 				_hStretcherBottomLeft.y = _bottomLeftCorner.y;
-				_hStretcherBottomLeft.width = ( ( w  * _scaleFactor ) - ( _bottomLeftCorner.width * 2 ) ) / 2;
+				_hStretcherBottomLeft.width = ( w - ( _bottomLeftCorner.width * 2 ) ) / 2;
 				this.addChild( _hStretcherBottomLeft );
 				
 				_hStretcherBottomRight = new Image( _hStretcherBottomTex );
@@ -212,7 +208,7 @@ package vault.components
 				_highlightMid = new Image( _highlightMidTex );
 				_highlightMid.smoothing = TextureSmoothing.NONE;
 				_highlightMid.y = _topLeftCorner.bounds.bottom;
-				_highlightMid.width = w * _scaleFactor;
+				_highlightMid.width = w;
 				_highlightMid.height = ( _vStretcherLeft.height * _curvePos );
 				this.addChild( _highlightMid );
 			}
@@ -222,12 +218,12 @@ package vault.components
 				_highlightCurve = new Image( _highlightCurveTex );
 				_highlightCurve.smoothing = TextureSmoothing.NONE;
 				_highlightCurve.y = _highlightMid.bounds.bottom;
-				_highlightCurve.width = w * _scaleFactor;
+				_highlightCurve.width = w;
 				this.addChild( _highlightCurve );
 				
 				//Check if curve is too low - squash it if so
 				if( _highlightCurve.bounds.bottom > ( height - _bottomLeftCorner.height ) )
-					_highlightCurve.height -= ( _highlightCurve.bounds.bottom - ( ( h * _scaleFactor ) - _bottomLeftCorner.height ) );
+					_highlightCurve.height -= ( _highlightCurve.bounds.bottom - ( h - _bottomLeftCorner.height ) );
 			}
 			
 			
@@ -242,13 +238,13 @@ package vault.components
 		private function addMainTextField():void
 		{
 			//_mainTF = new TextField( width - ( 10 * _scaleFactor ), height - ( 10 * _scaleFactor ), _mainText, _theme.fontName, height - ( 6 * _scaleFactor ), _theme.textColor, _theme.bold, _multiline );
-			_mainTF = new TextField( width - ( 10 * _scaleFactor ), height - ( 10 * _scaleFactor ), _mainText, _theme.fontName, _fontSize, _theme.textColor, _theme.bold, _multiline );
+			_mainTF = new TextField( width - 10, height - 10, _mainText, _theme.fontName, _fontSize, _theme.textColor, _theme.bold, _multiline );
 			_mainTF.hAlign = _theme.hAlign;
 			_mainTF.autoScale = true;
 			_mainTF.border = false;
 			_mainTF.touchable = false;
-			_mainTF.x = ( 5 * _scaleFactor );
-			_mainTF.y = ( 5 * _scaleFactor );
+			_mainTF.x = 5;
+			_mainTF.y = 5;
 			this.addChild( _mainTF );
 		}
 		

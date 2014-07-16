@@ -7,7 +7,7 @@ Matt's AS3 Library
 --------------------------------------------------
 
 v4.0.8
-* FIXED - ButtonBase wasn't using scaleFactor
+* ButtonBase removed scaleFactor
 
 --------------------------------------------------
 
