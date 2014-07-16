@@ -108,7 +108,7 @@ package vault.components
 				_topRightCorner = new Image( _topCornerTex );
 				_topRightCorner.smoothing = TextureSmoothing.NONE;
 				_topRightCorner.scaleX = - _topRightCorner.scaleX;
-				_topRightCorner.x = w;
+				_topRightCorner.x = w * _scaleFactor;
 				this.addChild( _topRightCorner );
 			}
 			
@@ -116,13 +116,13 @@ package vault.components
 			{
 				_bottomLeftCorner = new Image( _bottomCornerTex );
 				_bottomLeftCorner.smoothing = TextureSmoothing.NONE;
-				_bottomLeftCorner.y = h - _bottomLeftCorner.height;
+				_bottomLeftCorner.y = ( h  * _scaleFactor ) - _bottomLeftCorner.height;
 				this.addChild( _bottomLeftCorner );
-			
+				
 				_bottomRightCorner = new Image( _bottomCornerTex );
 				_bottomRightCorner .smoothing = TextureSmoothing.NONE;
 				_bottomRightCorner.scaleX = - _bottomRightCorner.scaleX;
-				_bottomRightCorner.x = w;
+				_bottomRightCorner.x = w * _scaleFactor;
 				_bottomRightCorner.y = _bottomLeftCorner.y;
 				this.addChild( _bottomRightCorner );
 			}
@@ -136,12 +136,12 @@ package vault.components
 				_vStretcherLeft.height = _bottomLeftCorner.bounds.top - _topLeftCorner.bounds.bottom;
 				_vStretcherLeft.y = _topLeftCorner.bounds.bottom;
 				this.addChild( _vStretcherLeft );
-
+				
 				_vStretcherRight = new Image( _vStretcherTex );
 				_vStretcherRight.smoothing = TextureSmoothing.NONE;
 				_vStretcherRight.height = _bottomRightCorner.bounds.top - _topRightCorner.bounds.bottom;
 				_vStretcherRight.scaleX = - _vStretcherRight.scaleX;
-				_vStretcherRight.x = w;
+				_vStretcherRight.x = w * _scaleFactor;
 				_vStretcherRight.y = _topRightCorner.bounds.bottom;
 				this.addChild( _vStretcherRight );
 			}
@@ -156,7 +156,7 @@ package vault.components
 				_hStretcherTopLeft.x = _topLeftCorner.bounds.right;
 				_hStretcherTopLeft.width = ( ( _topRightCorner.bounds.left - _topLeftCorner.bounds.right ) / 2 );
 				this.addChild( _hStretcherTopLeft );
-
+				
 				_hStretcherTopRight = new Image( _hStretcherTopTex );
 				_hStretcherTopRight.smoothing = TextureSmoothing.NONE;
 				_hStretcherTopRight.width = _hStretcherTopLeft.width;
@@ -193,7 +193,7 @@ package vault.components
 				_hStretcherBottomLeft.smoothing = TextureSmoothing.NONE;
 				_hStretcherBottomLeft.x = _bottomLeftCorner.bounds.right;
 				_hStretcherBottomLeft.y = _bottomLeftCorner.y;
-				_hStretcherBottomLeft.width = ( w - ( _bottomLeftCorner.width * 2 ) ) / 2;
+				_hStretcherBottomLeft.width = ( ( w  * _scaleFactor ) - ( _bottomLeftCorner.width * 2 ) ) / 2;
 				this.addChild( _hStretcherBottomLeft );
 				
 				_hStretcherBottomRight = new Image( _hStretcherBottomTex );
@@ -212,7 +212,7 @@ package vault.components
 				_highlightMid = new Image( _highlightMidTex );
 				_highlightMid.smoothing = TextureSmoothing.NONE;
 				_highlightMid.y = _topLeftCorner.bounds.bottom;
-				_highlightMid.width = w;
+				_highlightMid.width = w * _scaleFactor;
 				_highlightMid.height = ( _vStretcherLeft.height * _curvePos );
 				this.addChild( _highlightMid );
 			}
@@ -222,12 +222,12 @@ package vault.components
 				_highlightCurve = new Image( _highlightCurveTex );
 				_highlightCurve.smoothing = TextureSmoothing.NONE;
 				_highlightCurve.y = _highlightMid.bounds.bottom;
-				_highlightCurve.width = w;
+				_highlightCurve.width = w * _scaleFactor;
 				this.addChild( _highlightCurve );
 				
 				//Check if curve is too low - squash it if so
 				if( _highlightCurve.bounds.bottom > ( height - _bottomLeftCorner.height ) )
-					_highlightCurve.height -= ( _highlightCurve.bounds.bottom - ( h - _bottomLeftCorner.height ) );
+					_highlightCurve.height -= ( _highlightCurve.bounds.bottom - ( ( h * _scaleFactor ) - _bottomLeftCorner.height ) );
 			}
 			
 			
