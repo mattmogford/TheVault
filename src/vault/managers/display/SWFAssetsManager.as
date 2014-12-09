@@ -2,6 +2,7 @@ package vault.managers.display
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -71,13 +72,19 @@ package vault.managers.display
 		protected static function onLoadComplete(event:Event):void
 		{
 			trace( "[ SWFAssetsManager ] onLoadComplete" );
-			var swfLoader:SWFLoaderDO = SWFLoaderDO( LoaderInfo( event.currentTarget ).loader.metaData );
-			swfLoader.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void{ trace(e) });
-			swfLoader.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete, false);
+			var loader:Loader = LoaderInfo( event.currentTarget ).loader;
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void{ trace(e) });
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete, false);
 			
-			_swfLoadersCompleted.push(
-				_swfLoaders.splice( _swfLoaders.indexOf( swfLoader ), 1 )[ 0 ]
-			);
+			for( var i:int = 0; i < _swfLoaders.length; i++ ) 
+			{
+				if( loader === _swfLoaders[ i ].loader )
+				{
+					_swfLoadersCompleted.push(
+						_swfLoaders.splice( _swfLoaders.indexOf( _swfLoaders[ i ] ), 1 )[ 0 ]
+					);
+				}
+			}
 			
 			if( !_swfLoaders.length )
 				_instance.dispatchEvent( new Event( Event.COMPLETE ) );

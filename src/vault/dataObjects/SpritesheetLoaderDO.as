@@ -7,7 +7,6 @@ package vault.dataObjects
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.utils.Dictionary;
 	
 	import vault.utils.JSONLoader;
 	
@@ -30,11 +29,9 @@ package vault.dataObjects
 			
 			_imgUrlRequest = imgU;
 			_imgLoader = new Loader;
-			_imgLoader.metaData = this;
 			
 			_jsonUrlRequest = jsonU;
 			_jsonLoader = new JSONLoader;
-			_jsonLoader.metaData = this;
 		}
 		
 		public function get name():String

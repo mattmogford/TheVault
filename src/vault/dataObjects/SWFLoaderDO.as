@@ -17,9 +17,7 @@ package vault.dataObjects
 		{			
 			_name = StringFormat.filename( u.url );			
 			_urlRequest = u;
-			_loader = new Loader;
-			
-			_loader.metaData = this;
+			_loader = new Loader; 
 		}
 		
 		public function get name():String

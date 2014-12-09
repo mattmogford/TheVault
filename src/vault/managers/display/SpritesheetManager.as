@@ -104,8 +104,7 @@ package vault.managers.display
 		protected static function onImgLoadComplete(event:Event):void
 		{
 			trace( "[ SpritesheetManager ] onImgLoadComplete" );
-			//var spritesheetLoader:SpritesheetLoaderDO = SpritesheetLoaderDO( LoaderInfo( event.currentTarget ).loader.metaData );
-			_currentSpritesheetLoader = SpritesheetLoaderDO( LoaderInfo( event.currentTarget ).loader.metaData );
+			//_currentSpritesheetLoader = SpritesheetLoaderDO( LoaderInfo( event.currentTarget ).loader.metaData );
 			_currentSpritesheetLoader.imgLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void{ trace(e) });
 			_currentSpritesheetLoader.imgLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImgLoadComplete, false);
 			
@@ -117,8 +116,7 @@ package vault.managers.display
 		protected static function onJsonLoadComplete(event:Event):void
 		{
 			trace( "[ SpritesheetManager ] onJsonLoadComplete" );
-			//var spritesheetLoader:SpritesheetLoaderDO = SpritesheetLoaderDO( JSONLoader( event.currentTarget ).metaData );
-			_currentSpritesheetLoader = SpritesheetLoaderDO( JSONLoader( event.currentTarget ).metaData );
+			//_currentSpritesheetLoader = SpritesheetLoaderDO( JSONLoader( event.currentTarget ).metaData );
 			_currentSpritesheetLoader.jsonLoader.removeEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void{ trace(e) });
 			_currentSpritesheetLoader.jsonLoader.removeEventListener(Event.COMPLETE, onImgLoadComplete, false);
 			

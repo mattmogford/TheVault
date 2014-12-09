@@ -6,6 +6,12 @@ Matt's AS3 Library
 
 --------------------------------------------------
 
+v4.0.9
+* Loader.metaData no longer exists. Has been removed from SpritesheetLoaderDO & SWFLoaderDO.
+	* The above means that SpritesheetMAnager and SWFAssetsManager had to be updated to manage without the metaData property
+
+--------------------------------------------------
+
 v4.0.8
 * ButtonBase removed scaleFactor
 
